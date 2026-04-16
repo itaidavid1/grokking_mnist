@@ -40,7 +40,7 @@ def test_checkpoint_save_load():
     
     # Load shapes dataset
     print("\n1. Training model on geometric shapes...")
-    train_set, test_set = load_geometric_shapes(config, num_samples_per_shape=50)
+    train_set, test_set = load_geometric_shapes(config.seed, num_samples_per_shape=50)
     results, model = train(config, train_set=train_set, test_set=test_set, num_classes=4)
     
     # Save checkpoint
