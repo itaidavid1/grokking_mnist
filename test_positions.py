@@ -15,7 +15,7 @@ else:
 def test_shape_positions():
     """Generate shapes and visualize to verify position variation."""
     config = GrokConfig(seed=42)
-    train_set, _ = load_geometric_shapes(config, num_samples_per_shape=20)
+    train_set, _ = load_geometric_shapes(config.seed, num_samples_per_shape=20)
     
     shape_names = ['Lines', 'Circles', 'Triangles', 'Squares']
     

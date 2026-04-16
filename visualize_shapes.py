@@ -15,7 +15,7 @@ else:
 def visualize_shapes():
     """Generate and display sample geometric shapes."""
     config = GrokConfig(seed=42)
-    train_set, _ = load_geometric_shapes(config, num_samples_per_shape=50)
+    train_set, _ = load_geometric_shapes(config.seed, num_samples_per_shape=50)
     
     shape_names = ['Lines', 'Circles', 'Triangles', 'Squares']
     

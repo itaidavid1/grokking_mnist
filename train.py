@@ -92,7 +92,7 @@ def _save_plots(log_steps, train_acc, test_acc, train_loss, test_loss,
 
 # ── main training entry-point ────────────────────────────────────────────────
 
-def train(config: GrokConfig, train_set=None, test_set=None, num_classes=10):
+def train(config: GrokConfig, model=None, train_set=None, test_set=None, num_classes=10):
     """Train a model on the given dataset.
     
     Args:
@@ -130,7 +130,10 @@ def train(config: GrokConfig, train_set=None, test_set=None, num_classes=10):
     test_max_batches = 10  # cap test eval at ~2000 samples to stay fast
 
     # --- model ---
-    mlp = build_mlp(config, device, num_classes=num_classes)
+    if model is None:
+        mlp = build_mlp(config, device, num_classes=num_classes)
+    else:
+        mlp = model
     nparams = sum(p.numel() for p in mlp.parameters() if p.requires_grad)
     print(f"Number of parameters: {nparams}")
 

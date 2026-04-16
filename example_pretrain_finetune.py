@@ -47,7 +47,7 @@ def main():
     print(f"Pre-training with L2 regularization (weight_decay={pretrain_config.weight_decay})")
     
     # Load shapes dataset
-    shapes_train, shapes_test = load_geometric_shapes(pretrain_config, num_samples_per_shape=250)
+    shapes_train, shapes_test = load_geometric_shapes(pretrain_config.seed, num_samples_per_shape=250)
     
     # Pre-train on shapes (4 classes)
     print(f"\nPre-training on {len(shapes_train)} shape samples...")

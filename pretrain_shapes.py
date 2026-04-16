@@ -106,7 +106,7 @@ def main():
     print()
     
     # Load geometric shapes dataset
-    train_set, test_set = load_geometric_shapes(config, num_samples_per_shape=samples_per_shape)
+    train_set, test_set = load_geometric_shapes(config.seed, num_samples_per_shape=samples_per_shape)
     
     # Train with 4 output classes (line, circle, triangle, square)
     results, model = train(config, train_set=train_set, test_set=test_set, num_classes=4)

@@ -5,10 +5,9 @@ import numpy as np
 from scipy import ndimage
 from PIL import Image, ImageDraw
 
-from .config import GrokConfig
 
 
-def load_mnist(config: GrokConfig):
+def load_mnist(download_directory: str, train_points: int):
     """Load MNIST and return a small training subset + full test set.
 
     A small training subset is essential for inducing grokking: the model
@@ -17,20 +16,20 @@ def load_mnist(config: GrokConfig):
     transform = transforms.ToTensor()
 
     train_full = torchvision.datasets.MNIST(
-        root=config.download_directory,
+        root=download_directory,
         train=True,
         transform=transform,
         download=True,
     )
     test = torchvision.datasets.MNIST(
-        root=config.download_directory,
+        root=download_directory,
         train=False,
         transform=transform,
         download=True,
     )
 
     train_subset = torch.utils.data.Subset(
-        train_full, range(config.train_points)
+        train_full, range(train_points)
     )
     return train_subset, test
 
@@ -257,7 +256,7 @@ class GeometricShapesDataset(torch.utils.data.Dataset):
         return self.data[idx], self.labels[idx]
 
 
-def load_geometric_shapes(config: GrokConfig, num_samples_per_shape=250):
+def load_geometric_shapes(seed: int, num_samples_per_shape=250):
     """Load geometric shapes dataset for pre-training.
     
     Returns train and test sets with 4 classes:
@@ -271,13 +270,13 @@ def load_geometric_shapes(config: GrokConfig, num_samples_per_shape=250):
     train_set = GeometricShapesDataset(
         num_samples_per_shape=num_samples_per_shape,
         size=28,
-        seed=config.seed
+        seed=seed
     )
     
     test_set = GeometricShapesDataset(
         num_samples_per_shape=num_samples_per_shape // 4,
         size=28,
-        seed=config.seed + 1000
+        seed=seed + 1000
     )
     
     return train_set, test_set

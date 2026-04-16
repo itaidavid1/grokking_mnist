@@ -50,7 +50,7 @@ def run_comparison():
         )
         
         # Load shapes dataset
-        train_set, test_set = load_geometric_shapes(config, num_samples_per_shape=100)
+        train_set, test_set = load_geometric_shapes(config.seed, num_samples_per_shape=100)
         
         # Train
         results, model = train(config, train_set=train_set, test_set=test_set, num_classes=4)
