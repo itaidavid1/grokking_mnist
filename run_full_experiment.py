@@ -49,7 +49,7 @@ def load_checkpoint_weights(model, filepath):
 def run_pretraining_experiments(
     pretrain_wd_values,
     samples_per_shape=250,
-    optimization_steps=10000,
+    optimization_steps=1000,
     base_results_dir="./results/full_experiment"
 ):
     """Run pre-training experiments with different weight decay values.
@@ -262,7 +262,7 @@ def main():
     
     BASE_RESULTS_DIR = "./results/pretrain_finetune"
     PRETRAIN_SAMPLES_PER_SHAPE = 250
-    PRETRAIN_STEPS = 10000
+    PRETRAIN_STEPS = 1000
     FINETUNE_TRAIN_POINTS = 1000
     FINETUNE_STEPS = 20000
     
