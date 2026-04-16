@@ -166,7 +166,7 @@ def save_summary(results, base_results_dir):
 def main():
     """Run baseline-only MNIST weight decay sweep."""
     train_points = 1000
-    optimization_steps = 10
+    optimization_steps = 20000
     weight_decay_values = [0.0, 0.1, 0.01, 0.001]
     base_results_dir = "./results/baseline_vs_grokfast"
 

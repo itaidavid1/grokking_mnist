@@ -323,9 +323,9 @@ def main():
     
     BASE_RESULTS_DIR = "./results/pretrain_finetune"
     PRETRAIN_SAMPLES_PER_SHAPE = 250
-    PRETRAIN_STEPS = 10
+    PRETRAIN_STEPS = 2000
     FINETUNE_TRAIN_POINTS = 1000
-    FINETUNE_STEPS = 10
+    FINETUNE_STEPS = 20000
     
     print("=" * 100)
     print("PRE-TRAINING + FINE-TUNING EXPERIMENT (NO GROKFAST)")
