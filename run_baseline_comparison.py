@@ -18,12 +18,10 @@ if __package__ in (None, ""):
     from grokking_mnist.config import GrokConfig
     from grokking_mnist.train import train
     from grokking_mnist.data import load_mnist
-    from grokking_mnist.grokking_detector import detect_grokking, print_grokking_report
 else:
     from .config import GrokConfig
     from .train import train
     from .data import load_mnist
-    from .grokking_detector import detect_grokking, print_grokking_report
 
 
 def run_baseline_experiment(train_points=1000, optimization_steps=20000, base_results_dir="./results/baseline"):
@@ -68,13 +66,6 @@ def run_baseline_experiment(train_points=1000, optimization_steps=20000, base_re
     # Train
     results, model = train(config, train_set=train_set, test_set=test_set, num_classes=10)
     
-    # Detect grokking
-    grokking_info = detect_grokking(
-        results['log_steps'],
-        results['train_acc'],
-        results['test_acc']
-    )
-    print_grokking_report(grokking_info, label="Baseline")
     
     return {
         'experiment': 'baseline',
@@ -83,7 +74,6 @@ def run_baseline_experiment(train_points=1000, optimization_steps=20000, base_re
         'final_test_acc': results['test_acc'][-1],
         'final_train_loss': results['train_loss'][-1],
         'final_test_loss': results['test_loss'][-1],
-        'grokking_info': grokking_info
     }
 
 
@@ -131,13 +121,6 @@ def run_grokfast_experiment(train_points=1000, optimization_steps=20000, base_re
     # Train
     results, model = train(config, train_set=train_set, test_set=test_set, num_classes=10)
     
-    # Detect grokking
-    grokking_info = detect_grokking(
-        results['log_steps'],
-        results['train_acc'],
-        results['test_acc']
-    )
-    print_grokking_report(grokking_info, label="Grokfast")
     
     return {
         'experiment': 'grokfast',
@@ -146,7 +129,6 @@ def run_grokfast_experiment(train_points=1000, optimization_steps=20000, base_re
         'final_test_acc': results['test_acc'][-1],
         'final_train_loss': results['train_loss'][-1],
         'final_test_loss': results['test_loss'][-1],
-        'grokking_info': grokking_info
     }
 
 
@@ -155,7 +137,7 @@ def print_comparison_table(results):
     print("\n" + "=" * 100)
     print("BASELINE vs GROKFAST COMPARISON")
     print("=" * 100)
-    print(f"\n{'Experiment':<15} {'Filter':<10} {'Train Acc':<12} {'Test Acc':<12} {'Gap':<10} {'Grokking':<10}")
+    print(f"\n{'Experiment':<15} {'Filter':<10} {'Train Acc':<12} {'Test Acc':<12} {'Gap':<10}")
     print("-" * 100)
     
     for result in results:
@@ -164,9 +146,8 @@ def print_comparison_table(results):
         train_acc = result['final_train_acc'] * 100
         test_acc = result['final_test_acc'] * 100
         gap = train_acc - test_acc
-        grokked = "YES" if result['grokking_info']['grokking_detected'] else "NO"
         
-        print(f"{experiment:<15} {filter_type:<10} {train_acc:<12.2f} {test_acc:<12.2f} {gap:<10.2f} {grokked:<10}")
+        print(f"{experiment:<15} {filter_type:<10} {train_acc:<12.2f} {test_acc:<12.2f} {gap:<10.2f}")
     
     print("=" * 100)
     
@@ -180,33 +161,6 @@ def print_comparison_table(results):
         print(f"\nGrokfast Improvement:")
         print(f"  Test Accuracy Gain: {test_acc_diff:+.2f}%")
         
-        if baseline['grokking_info']['grokking_detected'] or grokfast['grokking_info']['grokking_detected']:
-            print(f"  Grokking Effect:")
-            if grokfast['grokking_info']['grokking_detected']:
-                print(f"    - Grokfast: Grokking at step {grokfast['grokking_info']['grokking_step']}")
-            else:
-                print(f"    - Grokfast: No grokking detected")
-            
-            if baseline['grokking_info']['grokking_detected']:
-                print(f"    - Baseline: Grokking at step {baseline['grokking_info']['grokking_step']}")
-            else:
-                print(f"    - Baseline: No grokking detected")
-
-
-def save_summary(results, base_results_dir):
-    """Save comparison summary to JSON file."""
-    summary = {
-        'timestamp': datetime.now().isoformat(),
-        'experiments': results,
-    }
-    
-    summary_path = f"{base_results_dir}/comparison_summary.json"
-    os.makedirs(base_results_dir, exist_ok=True)
-    
-    with open(summary_path, 'w') as f:
-        json.dump(summary, f, indent=2)
-    
-    print(f"\nComparison summary saved to: {summary_path}")
 
 
 def main():
